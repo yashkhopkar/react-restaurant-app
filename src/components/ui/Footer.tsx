@@ -1,48 +1,46 @@
-import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
-  const footerStyle: React.CSSProperties = {
-    left: 0,
-    bottom: 0,
-    width: '100%',
-    backgroundColor: '#f8f9fa',
-    color: 'black',
-    textAlign: 'center',
-    padding: '1em',
-  };
-
   return (
-    <footer style={footerStyle}>
+    <footer className="bg-light text-center py-4">
       <Container>
         <Row>
-          <Col>
-            <h5>Restaurant App</h5>
-            <ul>
+          <Col md={6} className="mb-4">
+            <h5 className="text-uppercase">Restaurant App</h5>
+            <ul className="list-unstyled">
               <li>
-                <Link to='/about'>About Us</Link>
+                <Link to="/about" className="text-dark">
+                  About Us
+                </Link>
               </li>
               <li>
-                <Link to='/contact'>Contact</Link>
+                <Link to="/contact" className="text-dark">
+                  Contact
+                </Link>
               </li>
             </ul>
           </Col>
-          <Col>
-            <h5>Legal</h5>
-            <ul>
+          <Col md={6} className="mb-4">
+            <h5 className="text-uppercase">Legal</h5>
+            <ul className="list-unstyled">
               <li>
-                <Link to='/terms'>Terms of Service</Link>
+                <Link to="/terms" className="text-dark">
+                  Terms of Service
+                </Link>
               </li>
               <li>
-                <Link to='/privacy'>Privacy Policy</Link>
+                <Link to="/privacy" className="text-dark">
+                  Privacy Policy
+                </Link>
               </li>
             </ul>
           </Col>
         </Row>
         <Row>
           <Col>
-            <p>
+            <p className="mb-0">
               &copy; {new Date().getFullYear()} Our Restaurant. All Rights
               Reserved.
             </p>
