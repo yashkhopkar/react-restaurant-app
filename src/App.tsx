@@ -1,14 +1,17 @@
-import './App.css';
-import { Outlet } from 'react-router-dom';
-import Navigation from './components/ui/Navigation';
-import Footer from './components/ui/Footer';
+import "./App.css";
+import { Outlet } from "react-router-dom";
+import Navigation from "./components/ui/Navigation";
+import Footer from "./components/ui/Footer";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
     <>
-      <Navigation />
-      <Outlet />
-      <Footer />
+      <CartProvider>
+        <Navigation />
+        <Outlet />
+        <Footer />
+      </CartProvider>
     </>
   );
 }

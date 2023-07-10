@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Card, Container } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Card, Container } from "react-bootstrap";
+import CartContext from "../context/CartContext";
 
-interface MenuItem {
+export interface MenuItem {
   _id: string;
   name: string;
   description: string;
@@ -12,6 +13,7 @@ interface MenuItem {
 
 const Menu: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const cartContext = useContext(CartContext);
 
   useEffect(() => {
     void fetchData();
@@ -39,6 +41,12 @@ const Menu: React.FC = () => {
               <Card.Title>{menuItem.name}</Card.Title>
               <Card.Text>{menuItem.description}</Card.Text>
               <Card.Text>Price: ${menuItem.price.toFixed(2)}</Card.Text>
+              <Button
+                variant="primary"
+                onClick={() => cartContext?.addToCart(menuItem._id)}
+              >
+                Add to Cart
+              </Button>
             </Card.Body>
           </Card>
         ))}

@@ -10,6 +10,8 @@ import Home from "./components/Home.tsx";
 import Admin from "./components/admin/Admin.tsx";
 import AddMenuItem from "./components/admin/AddMenuItem.tsx";
 import Menu from "./components/Menu.tsx";
+import Cart from "./components/Cart.tsx";
+import { AuthContextProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,7 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "menu", element: <Menu /> },
+      { path: "cart", element: <Cart /> },
       {
         path: "admin",
         element: <Admin />,
@@ -31,6 +34,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   </React.StrictMode>
 );
