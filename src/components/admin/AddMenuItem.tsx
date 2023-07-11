@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 
 interface IMenuItem {
   name: string;
@@ -17,6 +18,8 @@ const AddMenuItem = () => {
     image: 'test.png',
   });
 
+  const location = useLocation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMenuItem({
       ...menuItem,
@@ -27,7 +30,11 @@ const AddMenuItem = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(menuItem);
-    addMenuItem();
+    if (location.state) {
+      updateMenuItem();
+    } else {
+      addMenuItem();
+    }
   };
 
   const addMenuItem = async () => {
@@ -47,6 +54,38 @@ const AddMenuItem = () => {
       console.log(err);
     }
   };
+
+  const updateMenuItem = async () => {
+    try {
+      console.log('In Update');
+      const response = await axios.put(
+        'http://localhost:3000/api/updateMenuItem',
+        {
+          itemId: location.state._id,
+          name: menuItem.name,
+          description: menuItem.description,
+          price: menuItem.price,
+          image: 'test.png',
+        }
+      );
+
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (location.state) {
+      console.log(location.state);
+      setMenuItem({
+        name: location.state.name,
+        description: location.state.description,
+        price: location.state.price,
+        image: 'test.png',
+      });
+    }
+  }, [location.state]);
 
   return (
     <Container>

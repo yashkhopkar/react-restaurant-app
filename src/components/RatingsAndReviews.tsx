@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
+import axios from 'axios';
 
 interface IReview {
-  id: string;
   rating: number;
   text: string;
 }
@@ -12,14 +12,14 @@ const RatingsAndReviews = () => {
   const [rating, setRating] = useState(0);
   const [text, setText] = useState('');
 
-  const fetchReviews = () => {
+  const fetchReviews = async () => {
     // Fetch reviews from the backend.
-    // For the purposes of this example, we will use hard-coded data.
-    const fetchedReviews: IReview[] = [
-      { id: '1', rating: 5, text: 'Great restaurant!' },
-      { id: '2', rating: 4, text: 'Very good food.' },
-    ];
-    setReviews(fetchedReviews);
+    try {
+      const response = await axios.get('http://localhost:3000/api/getReviews');
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
   };
 
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,15 +30,21 @@ const RatingsAndReviews = () => {
     setText(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Post the review to the backend.
-    // You would have to implement this.
+    try {
+      const newReview = { rating, text };
+      await axios.post('http://localhost:3000/api/addReview', newReview);
+      fetchReviews(); // Fetch reviews again to update the list with the newly added review.
 
-    // Clear the form.
-    setRating(0);
-    setText('');
+      // Clear the form.
+      setRating(0);
+      setText('');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
   };
 
   useEffect(() => {
@@ -49,7 +55,7 @@ const RatingsAndReviews = () => {
     <Container>
       <h1>Ratings & Reviews</h1>
       {reviews.map((review) => (
-        <div key={review.id}>
+        <div key={review._id}>
           <p>Rating: {review.rating}/5</p>
           <p>{review.text}</p>
         </div>

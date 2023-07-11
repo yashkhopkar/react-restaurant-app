@@ -34,12 +34,17 @@ const Admin = () => {
     navigate('/addMenuItem');
   };
 
-  const handleEditMenuItem = (id: string) => {
-    // Edit menu item logic goes here
+  const handleEditMenuItem = (item: IMenuItem) => {
+    navigate('/addMenuItem', { state: item });
   };
 
-  const handleDeleteMenuItem = (id: string) => {
-    // Delete menu item logic goes here
+  const handleDeleteMenuItem = async (id: string) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/deleteMenuItem/${id}`);
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting menu item:', error);
+    }
   };
 
   useEffect(() => {
@@ -75,7 +80,7 @@ const Admin = () => {
               <td>
                 <Button
                   variant='success'
-                  onClick={() => handleEditMenuItem(item._id)}
+                  onClick={() => handleEditMenuItem(item)}
                   style={btnStyle}
                 >
                   Edit
