@@ -1,9 +1,10 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Container, Table, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 interface IMenuItem {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -17,21 +18,20 @@ const Admin = () => {
   const [menuItems, setMenuItems] = useState<IMenuItem[]>([]);
   const navigate = useNavigate();
 
-  const fetchData = () => {
-    const data: IMenuItem[] = [
-      { id: '1', name: 'Pizza', description: 'Cheesy goodness', price: 10.99 },
-      {
-        id: '2',
-        name: 'Burger',
-        description: 'Juicy burger with fries',
-        price: 8.99,
-      },
-    ];
-    setMenuItems(data);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3000/api/getMenuItems'
+      );
+      const data: IMenuItem[] = response.data as IMenuItem[];
+      setMenuItems(data);
+    } catch (error) {
+      console.error('Error fetching menu items:', error);
+    }
   };
 
   const handleAddMenuItem = () => {
-    navigate('addMenuItem');
+    navigate('/addMenuItem');
   };
 
   const handleEditMenuItem = (id: string) => {
@@ -67,22 +67,22 @@ const Admin = () => {
         </thead>
         <tbody>
           {menuItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
+            <tr key={item._id}>
+              <td>{item._id}</td>
               <td>{item.name}</td>
               <td>{item.description}</td>
               <td>${item.price.toFixed(2)}</td>
               <td>
                 <Button
                   variant='success'
-                  onClick={() => handleEditMenuItem(item.id)}
+                  onClick={() => handleEditMenuItem(item._id)}
                   style={btnStyle}
                 >
                   Edit
                 </Button>
                 <Button
                   variant='danger'
-                  onClick={() => handleDeleteMenuItem(item.id)}
+                  onClick={() => handleDeleteMenuItem(item._id)}
                 >
                   Delete
                 </Button>

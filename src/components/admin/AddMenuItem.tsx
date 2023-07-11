@@ -1,19 +1,20 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 
 interface IMenuItem {
-  id: string;
   name: string;
   description: string;
   price: number;
+  image: string;
 }
 
-const AddMenuItem: React.FC = () => {
+const AddMenuItem = () => {
   const [menuItem, setMenuItem] = useState<IMenuItem>({
-    id: '',
     name: '',
     description: '',
     price: 0,
+    image: 'test.png',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,8 +26,26 @@ const AddMenuItem: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add menu item logic goes here
     console.log(menuItem);
+    addMenuItem();
+  };
+
+  const addMenuItem = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/addMenuItem',
+        {
+          name: menuItem.name,
+          description: menuItem.description,
+          price: menuItem.price,
+          image: 'test.png',
+        }
+      );
+
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
